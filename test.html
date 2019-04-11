@@ -1,0 +1,50 @@
+<html>
+  <head>
+   <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    
+    <script>
+
+       var Module = {
+            onRuntimeInitialized: function () {
+                alert('onRuntimeInitialized');
+ 	      //
+      // int
+      int_sqrt = Module.ccall('int_sqrt', 'number', ['number'],['12']);
+      console.log("#int_sqrt : "+int_sqrt);
+
+      //
+      // string
+      chars_hello = Module.cwrap('chars_hello', 'string', ['string']);
+      console.log("#chars_hello : " + chars_hello('test'));
+
+      //
+      // uint8array
+      helloArray = [];
+      helloSrc = "hello";
+      for(i=0;i<helloSrc.length;i++){
+        helloArray.push(helloSrc.charCodeAt(i));
+      }
+      hello = chars_hello(new Uint8Array('helloArray'));
+      console.log("#chars_hello : " + hello);
+
+
+      //
+      // pointer
+      new_hello = Module.cwrap('new_hello', 'number', ['string', 'number']);
+      hello_getName = Module.cwrap('hello_getName', 'string', ['number']);
+      free_hello = Module.cwrap('free_hello', '', ['number']);
+
+      helloObj = new_hello("test", 4);
+      console.log("#pointer:" + hello_getName(helloObj));
+      free_hello(helloObj);	
+            }
+        };
+
+
+    </script>
+<script async src="test.js"></script>
+  </body>
+</html>
